@@ -797,7 +797,7 @@ footer p{font-size:.8rem}
   <div class="modal cal">
     <button class="close-x" onclick="closeCal()" aria-label="close">✕</button>
     <h3><span class="en">Availability calendar</span><span class="ja">空き状況カレンダー</span></h3>
-    <p style="font-size:.76rem;color:#587082"><span class="en">龍凰丸 takes bookings by request — tap a date and it goes straight into the booking form. The captain confirms every trip personally.</span><span class="ja">龍凰丸の予約はリクエスト制。日付をタップするとそのまま予約フォームに入ります。出船は船長が個別に確定します。</span></p>
+    <p style="font-size:.76rem;color:#587082"><span class="en">Tap a date to see the slots — it goes straight into the booking form. The captain confirms every trip personally. (Sample data for this demo.)</span><span class="ja">日付をタップすると枠が表示され、そのまま予約フォームに入ります。出船は船長が個別に確定します。（表示はデモ用サンプルです）</span></p>
     <div class="cal-head">
       <button class="cal-nav" id="calPrev" onclick="calShift(-1)" aria-label="previous month">‹</button>
       <strong id="calLabel"></strong>
@@ -1037,7 +1037,7 @@ function renderCal(){
     html+=`<button type="button" class="${cls}" ${past?'':`onclick="calPick('${key}')"`}>${d}<span class="mk ${mc}">${past?'':mk}</span></button>`;
   }
   document.getElementById('calGrid').innerHTML=html;
-  document.getElementById('calAsof').textContent=(ja?'現在は公開カレンダー未連携のため全日リクエスト制です · IG最新の予約状況ハイライトもご確認ください · ':'Bookings are by request — see the latest availability highlight on Instagram · ')+(window.AVAIL_ASOF||'');
+  document.getElementById('calAsof').textContent=(ja?'※デモ用サンプルの空き状況です。実運用ではIG・Googleカレンダーの予約状況と連携します · ':'Sample availability for this demo — the live site syncs with the captain’s real calendar · ')+(window.AVAIL_ASOF||'');
   renderSlots();
 }
 function renderSlots(){
