@@ -247,6 +247,21 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 .social-card .arrow{margin-left:auto;color:var(--red);font-weight:800}
 @media(max-width:760px){.gal-grid{grid-template-columns:repeat(2,1fr)}.social-cards{grid-template-columns:1fr}}
 
+/* eat your catch */
+.eat-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:stretch}
+.eat-photo{position:relative;border-radius:14px;overflow:hidden;margin:0;border:1px solid var(--border)}
+.eat-photo img{width:100%;height:100%;object-fit:cover;min-height:280px}
+.eat-photo figcaption{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(12,42,64,.78));color:#dfeef7;font-size:.64rem;padding:20px 12px 8px;text-align:right}
+.eat-steps{list-style:none;display:grid;gap:10px}
+.eat-steps li{display:flex;gap:12px;background:var(--paper);border-radius:12px;padding:12px 14px;font-size:.82rem;align-items:flex-start;min-width:0}
+.eat-steps .num{flex:0 0 26px;height:26px;border-radius:50%;background:var(--gold);color:#fff;font-weight:800;display:grid;place-items:center;font-size:.8rem}
+.eat-steps strong{display:block;font-size:.84rem}
+.eat-steps small{color:#3e5866;font-size:.74rem}
+.eat-links{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.eat-links a{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--border);border-radius:99px;padding:8px 14px;font-size:.76rem;font-weight:800;color:var(--indigo);transition:.2s}
+.eat-links a:hover{border-color:var(--indigo);transform:translateY(-1px)}
+@media(max-width:760px){.eat-grid{grid-template-columns:1fr}.eat-photo img{min-height:220px}}
+
 /* reviews / why us */
 .rev-grid{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
 .rev-score{text-align:center;background:var(--paper);border-radius:16px;padding:22px 30px}
@@ -672,6 +687,29 @@ footer p{font-size:.8rem}
     </div>
   </div>
 
+  <!-- eat your catch -->
+  <div class="secb rv" id="eat">
+    <h2><span class="en">From the sea to your table — the same day</span><span class="ja">釣った魚を、その日のうちに味わう</span></h2>
+    <p class="sub"><span class="en">Partner izakaya "Nonka" in Motobu cooks your catch — sashimi, grilled, Okinawa style. Book ahead and just bring your fish.</span><span class="ja">提携の「居酒屋 呑家」（本部町）が釣果を刺身・塩焼きなどに調理。事前予約して魚を持ち込むだけ。</span></p>
+    <div class="eat-grid">
+      <figure class="eat-photo">
+        <img src="assets/izakaya_catch.jpg" alt="Freshly caught fish served as sashimi and grilled dishes at a harbor izakaya" loading="lazy">
+        <figcaption><span class="en">*Image for illustration (AI-generated for this demo)</span><span class="ja">※イメージ（デモ用に生成した画像です）</span></figcaption>
+      </figure>
+      <div>
+        <ol class="eat-steps">
+          <li><span class="num">1</span><span><strong><span class="en">Catch your fish on 龍凰丸</span><span class="ja">龍凰丸で魚を釣る</span></strong><small><span class="en">Snappers, groupers, tachiuo — whatever the Okinawan sea gives you that day.</span><span class="ja">マダイ・アカジン・タチウオ…その日の海の恵みを。</span></small></span></li>
+          <li><span class="num">2</span><span><strong><span class="en">Reserve Nonka in advance</span><span class="ja">呑家さんを事前予約</span></strong><small><span class="en">Tell us when booking your trip — we'll help arrange it.</span><span class="ja">乗船予約の際にお声がけください。手配をお手伝いします。</span></small></span></li>
+          <li><span class="num">3</span><span><strong><span class="en">Toast with your own catch that night</span><span class="ja">その夜、自分の釣果で乾杯</span></strong><small><span class="en">Sashimi, shioyaki, Okinawan sides — the freshest dinner of your trip.</span><span class="ja">刺身に塩焼き、沖縄の小鉢。旅いちばんの鮮度です。</span></small></span></li>
+        </ol>
+        <div class="eat-links">
+          <a href="https://www.instagram.com/izakaya.nonka/" target="_blank" rel="noopener">📷 @izakaya.nonka</a>
+          <a href="tel:+81980436007">📞 0980-43-6007</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- why us -->
   <div class="secb rv" id="reviews">
     <h2><span class="en">Why guests choose 龍凰丸</span><span class="ja">龍凰丸が選ばれる理由</span></h2>
@@ -738,7 +776,7 @@ footer p{font-size:.8rem}
       </div>
       <div>
         <h4><span class="en">Contact</span><span class="ja">連絡先</span></h4>
-        <a href="tel:+818064824861">📞 080-6482-4861（宮城 龍斗）</a>
+        <a href="tel:+818064824861">📞 080-6482-4861 <span class="en">(Capt. Ryuto Miyagi)</span><span class="ja">（宮城 龍斗）</span></a>
         <a href="https://www.instagram.com/ryuo_umaru/" target="_blank" rel="noopener">📷 Instagram @ryuo_umaru</a>
         <a><span style="opacity:.6">💬 WhatsApp — <span class="en">coming soon</span><span class="ja">準備中</span></span></a>
       </div>
