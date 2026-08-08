@@ -230,12 +230,13 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 }
 
 /* gallery */
-.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:130px;gap:9px}
+.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:130px;gap:9px;grid-auto-flow:row dense}
 .g{border-radius:12px;overflow:hidden;position:relative}
 .g img{width:100%;height:100%;object-fit:cover;transition:.45s}
 .g:hover img{transform:scale(1.07)}
 .g.tall{grid-row:span 2}
 .g.wide{grid-column:span 2}
+.g.big{grid-column:span 2;grid-row:span 2}
 .social-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 .social-card{display:flex;align-items:center;gap:14px;background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:15px 18px;transition:.2s;min-width:0}
 .social-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
@@ -484,7 +485,7 @@ footer p{font-size:.8rem}
         </div>
       </div>
       <div class="cap-card">
-        <img src="assets/poster_tropical.jpg" alt="Okinawa scenery">
+        <img src="assets/gen_sesoko_buffalo.jpg" alt="Sesoko Island water-buffalo cart on the beach">
         <div>
           <span class="role"><span class="en">After fishing</span><span class="ja">釣りのあとも</span></span>
           <h3><span class="en">Eat your catch · Sesoko Island tours</span><span class="ja">釣った魚を調理・瀬底島観光</span></h3>
@@ -520,7 +521,7 @@ footer p{font-size:.8rem}
     </div>
 
     <div class="tripcard">
-      <div class="timg"><img src="assets/poster_tachiuo.jpg" alt="Huge hairtail caught at night"><span class="season"><span class="en">Seasonal</span><span class="ja">季節限定</span></span></div>
+      <div class="timg"><img src="assets/gen_tachiuo_night.jpg" alt="Guest with a huge hairtail caught at night"><span class="season"><span class="en">Seasonal</span><span class="ja">季節限定</span></span></div>
       <div class="tbody">
         <h3><span class="en">Night Fishing — Tachiuo &amp; More</span><span class="ja">夜釣り便（タチウオほか）</span></h3>
         <p class="desc"><span class="en">Cool evening trip under the lights — dragon-sized hairtail and night biters. Great after a sightseeing day.</span><span class="ja">涼しい夜にドラゴン級タチウオを狙う人気便。観光のあとにも◎。</span></p>
@@ -663,15 +664,15 @@ footer p{font-size:.8rem}
     <p class="sub"><span class="en">Okinawa's prize fish — akajin, ruby snapper, giant trevally — with guests from all over the world. <b>*Images generated for this demo.</b></span><span class="ja">アカジン・アカマチ・ロウニンアジなど沖縄の目玉魚と、世界中から来たお客様の雰囲気。<b>※画像はデモ用に生成したイメージです。</b></span></p>
     <div class="gal-grid">
       <div class="g tall"><img src="assets/gen_akajin_couple.jpg" alt="International couple with a bright red akajin coral trout" loading="lazy"></div>
-      <div class="g wide"><img src="assets/hero_motobu_sea.jpg" alt="Emerald reef waters off Motobu with a charter boat" loading="lazy"></div>
+      <div class="g big"><img src="assets/hero_motobu_sea.jpg" alt="Emerald reef waters off Motobu with a charter boat" loading="lazy"></div>
       <div class="g"><img src="assets/gen_akamachi_woman.jpg" alt="Guest with a ruby snapper (akamachi)" loading="lazy"></div>
-      <div class="g"><img src="assets/catch_ohime.jpg" alt="Red snapper on deck" loading="lazy"></div>
+      <div class="g"><img src="assets/gen_miibai_indian.jpg" alt="Couple with a red miibai grouper" loading="lazy"></div>
       <div class="g"><img src="assets/gen_family_kid.jpg" alt="Family with a colourful tropical fish" loading="lazy"></div>
       <div class="g tall"><img src="assets/gen_gt_group.jpg" alt="International group celebrating a giant trevally" loading="lazy"></div>
-      <div class="g"><img src="assets/catch_madai.jpg" alt="Big sea bream" style="object-position:center 68%" loading="lazy"></div>
-      <div class="g"><img src="assets/poster_tachiuo.jpg" alt="Dragon-size hairtail at night" loading="lazy"></div>
-      <div class="g"><img src="assets/catch_fuefuki.jpg" alt="Emperor fish" style="object-position:center 75%" loading="lazy"></div>
-      <div class="g"><img src="assets/poster_akajin.jpg" alt="Akajin coral trout" loading="lazy"></div>
+      <div class="g"><img src="assets/gen_taman_me.jpg" alt="Guest with a big taman emperor fish" loading="lazy"></div>
+      <div class="g"><img src="assets/gen_tachiuo_night.jpg" alt="Dragon-size hairtail caught at night" loading="lazy"></div>
+      <div class="g wide"><img src="assets/gen_selfie_eastasia.jpg" alt="Friends taking a selfie with an amberjack" loading="lazy"></div>
+      <div class="g"><img src="assets/gen_sesoko_buffalo.jpg" alt="Sesoko Island water-buffalo cart" loading="lazy"></div>
     </div>
     <div class="social-cards">
       <a class="social-card" href="https://www.instagram.com/ryuo_umaru/" target="_blank" rel="noopener">
