@@ -89,14 +89,19 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 }
 
 /* ===== hero ===== */
-.hero{padding:26px 0 0}
-.collage{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:200px 200px;gap:10px;border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
-.collage .c{position:relative;overflow:hidden}
-.collage .c img{width:100%;height:100%;object-fit:cover;transition:.4s}
-.collage .c:hover img{transform:scale(1.05)}
-.collage .c1{grid-row:span 2}
-.collage .badge-photos{position:absolute;right:12px;bottom:12px;background:rgba(12,42,64,.8);color:#fff;font-size:.74rem;font-weight:700;border-radius:9px;padding:7px 13px;backdrop-filter:blur(4px)}
-.title-row{padding:24px 0 8px}
+.hero{padding:0}
+/* ヒーロー: 地域のロケーション写真1枚をフルブリードで大きく見せる */
+.hero-photo{position:relative;width:100%;height:clamp(320px,52vh,600px);overflow:hidden;background:var(--deep)}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center 46%}
+.hero-photo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:38%;
+  background:linear-gradient(transparent,rgba(210,239,244,.65) 62%,#d2eff4);pointer-events:none}
+.hero-cap{position:absolute;left:0;right:0;top:0;padding:22px 0;
+  background:linear-gradient(rgba(6,25,40,.42),transparent)}
+.hero-cap .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.hero-cap .loc{color:#fff;font-size:.82rem;font-weight:800;letter-spacing:.06em;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.badge-photos{position:absolute;right:20px;bottom:calc(38% + 10px);background:rgba(12,42,64,.82);color:#fff;font-size:.74rem;font-weight:700;border-radius:9px;padding:8px 14px;backdrop-filter:blur(4px);z-index:2}
+@media(max-width:640px){.badge-photos{right:14px;font-size:.68rem;padding:7px 11px}}
+.title-row{padding:6px 0 8px}
 .title-row h1{font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.25}
 .title-row .sub{color:#3e5866;font-size:.92rem;margin-top:6px}
 .rate-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:.85rem}
@@ -104,7 +109,6 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 .rate-line b{font-size:.95rem}
 .pill{background:var(--white);border:1px solid var(--border);border-radius:99px;padding:4px 12px;font-size:.72rem;font-weight:700;color:#3e5866}
 .pill.hot{background:#fbeeec;border-color:rgba(214,64,46,.35);color:var(--red)}
-@media(max-width:760px){.collage{grid-template-columns:1fr 1fr;grid-template-rows:170px 110px}.collage .c4,.collage .c5{display:none}.collage .c1{grid-row:span 1;grid-column:span 2}}
 
 /* ===== trust strip ===== */
 .trust{display:flex;gap:10px;flex-wrap:wrap;padding:14px 0 26px}
@@ -124,7 +128,7 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 @media(max-width:640px){.amen{grid-template-columns:repeat(2,minmax(0,1fr))}.amen span{font-size:.76rem;padding:9px 10px}}
 .caps{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
 .cap-card{display:flex;gap:14px;background:var(--paper);border-radius:14px;padding:16px;min-width:0}
-.cap-card img{width:64px;height:64px;border-radius:50%;object-fit:cover;flex:0 0 64px;background:#fff}
+.cap-card img{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:center 60%;flex:0 0 64px;background:#fff}
 .cap-card h3{font-size:.95rem;font-weight:800}
 .cap-card .role{font-size:.7rem;color:var(--indigo);font-weight:800;letter-spacing:.05em;text-transform:uppercase}
 .cap-card p{font-size:.78rem;color:#3e5866;margin-top:4px}
@@ -133,8 +137,9 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 /* trip cards */
 .tripcard{display:grid;grid-template-columns:190px minmax(0,1fr) auto;gap:18px;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;background:var(--white);transition:.2s}
 .tripcard:hover{box-shadow:var(--shadow);border-color:var(--aqua)}
-.tripcard .timg{position:relative;min-height:150px}
-.tripcard .timg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tripcard .timg{position:relative;min-height:190px}
+/* 縦写真を横長の枠に入れるため、顔が入る上寄りをトリミング基準にする */
+.tripcard .timg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
 .tripcard .season{position:absolute;top:10px;left:10px;background:var(--gold);color:#fff;font-size:.62rem;font-weight:800;border-radius:99px;padding:3px 10px;text-transform:uppercase;letter-spacing:.05em}
 .tripcard .tbody{padding:16px 0}
 .tripcard h3{font-size:1.05rem;font-weight:800;line-height:1.3}
@@ -230,13 +235,11 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 }
 
 /* gallery */
-.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:130px;gap:9px;grid-auto-flow:row dense}
-.g{border-radius:12px;overflow:hidden;position:relative}
-.g img{width:100%;height:100%;object-fit:cover;transition:.45s}
-.g:hover img{transform:scale(1.07)}
-.g.tall{grid-row:span 2}
-.g.wide{grid-column:span 2}
-.g.big{grid-column:span 2;grid-row:span 2}
+/* 写真を切らずに全部見せるマソンリー段組み */
+.gal-grid{column-count:4;column-gap:9px}
+.g{break-inside:avoid;-webkit-column-break-inside:avoid;margin:0 0 9px;border-radius:12px;overflow:hidden;position:relative;display:block}
+.g img{width:100%;height:auto;display:block;transition:.45s}
+.g:hover img{transform:scale(1.05)}
 .social-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 .social-card{display:flex;align-items:center;gap:14px;background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:15px 18px;transition:.2s;min-width:0}
 .social-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
@@ -246,7 +249,9 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 .social-card h3{font-size:.92rem;font-weight:800}
 .social-card p{font-size:.74rem;color:#3e5866}
 .social-card .arrow{margin-left:auto;color:var(--red);font-weight:800}
-@media(max-width:760px){.gal-grid{grid-template-columns:repeat(2,1fr)}.social-cards{grid-template-columns:1fr}}
+@media(max-width:900px){.gal-grid{column-count:3}}
+@media(max-width:640px){.gal-grid{column-count:2}}
+@media(max-width:760px){.social-cards{grid-template-columns:1fr}}
 
 /* eat your catch */
 .eat-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:stretch}
@@ -434,14 +439,15 @@ footer p{font-size:.8rem}
 </header>
 
 <!-- ============ HERO ============ -->
-<section class="hero wrap" id="top">
-  <div class="collage">
-    <div class="c c1"><img src="assets/hero_motobu_sea.jpg" alt="Emerald reef waters off Motobu, Okinawa, with Ie Island on the horizon"></div>
-    <div class="c c2"><img src="assets/gen_akajin_couple.jpg" alt="Guests with a bright red akajin coral trout"></div>
-    <div class="c c3"><img src="assets/gen_gt_group.jpg" alt="Group celebrating a giant trevally"></div>
-    <div class="c c4"><img src="assets/gen_family_kid.jpg" alt="Family with a colourful tropical fish"></div>
-    <div class="c c5"><img src="assets/gen_akamachi_woman.jpg" alt="Guest with a ruby snapper"><a class="badge-photos" href="#gallery"><span class="en">📸 View all photos</span><span class="ja">📸 写真をもっと見る</span></a></div>
+<section class="hero" id="top">
+  <div class="hero-photo">
+    <img src="assets/hero_motobu_sea.jpg" alt="Emerald reef waters off Motobu, Okinawa, with Ie Island on the horizon">
+    <div class="hero-cap"><div class="wrap">
+      <span class="loc"><span class="en">MOTOBU · OKINAWA — Toguchi Port</span><span class="ja">沖縄・本部町 渡久地港</span></span>
+    </div></div>
+    <a class="badge-photos" href="#gallery"><span class="en">📸 View all photos</span><span class="ja">📸 写真をもっと見る</span></a>
   </div>
+  <div class="wrap">
   <div class="title-row">
     <h1 class="disp"><span class="en block">龍凰丸 — Ryuou Maru Fishing Charter, Okinawa</span><span class="ja block">龍凰丸（りゅうおうまる）— 沖縄・本部町 渡久地港の遊漁船</span></h1>
     <p class="sub"><span class="en">Toguchi Port, Motobu Town, Okinawa — crystal-blue tropical fishing grounds by Churaumi Aquarium</span><span class="ja">沖縄県国頭郡本部町・渡久地港から出港 · 美ら海水族館のすぐ近く</span></p>
@@ -457,6 +463,7 @@ footer p{font-size:.8rem}
     <span><i class="tick">✓</i><span class="en">Stripe secure card payment</span><span class="ja">Stripeカード決済対応</span></span>
     <span><i class="tick">✓</i><span class="en">Reply within 24 h</span><span class="ja">24時間以内に返信</span></span>
     <span><i class="tick">✓</i><span class="en">Your catch cooked at a partner izakaya</span><span class="ja">釣った魚は提携居酒屋で調理OK</span></span>
+  </div>
   </div>
 </section>
 
@@ -663,16 +670,15 @@ footer p{font-size:.8rem}
     <h2><span class="en">Catch gallery</span><span class="ja">釣果ギャラリー</span></h2>
     <p class="sub"><span class="en">Okinawa's prize fish — akajin, ruby snapper, giant trevally — with guests from all over the world. <b>*Images generated for this demo.</b></span><span class="ja">アカジン・アカマチ・ロウニンアジなど沖縄の目玉魚と、世界中から来たお客様の雰囲気。<b>※画像はデモ用に生成したイメージです。</b></span></p>
     <div class="gal-grid">
-      <div class="g tall"><img src="assets/gen_akajin_couple.jpg" alt="International couple with a bright red akajin coral trout" loading="lazy"></div>
-      <div class="g big"><img src="assets/hero_motobu_sea.jpg" alt="Emerald reef waters off Motobu with a charter boat" loading="lazy"></div>
-      <div class="g"><img src="assets/gen_akamachi_woman.jpg" alt="Guest with a ruby snapper (akamachi)" loading="lazy"></div>
-      <div class="g"><img src="assets/gen_miibai_indian.jpg" alt="Couple with a red miibai grouper" loading="lazy"></div>
-      <div class="g"><img src="assets/gen_family_kid.jpg" alt="Family with a colourful tropical fish" loading="lazy"></div>
-      <div class="g tall"><img src="assets/gen_gt_group.jpg" alt="International group celebrating a giant trevally" loading="lazy"></div>
-      <div class="g"><img src="assets/gen_taman_me.jpg" alt="Guest with a big taman emperor fish" loading="lazy"></div>
+      <div class="g"><img src="assets/gen_akajin_couple.jpg" alt="International couple with a bright red akajin coral trout" loading="lazy"></div>
       <div class="g"><img src="assets/gen_tachiuo_night.jpg" alt="Dragon-size hairtail caught at night" loading="lazy"></div>
-      <div class="g wide"><img src="assets/gen_selfie_eastasia.jpg" alt="Friends taking a selfie with an amberjack" loading="lazy"></div>
+      <div class="g"><img src="assets/gen_miibai_indian.jpg" alt="Couple with a red miibai grouper" loading="lazy"></div>
+      <div class="g"><img src="assets/gen_selfie_eastasia.jpg" alt="Friends taking a selfie with an amberjack" loading="lazy"></div>
+      <div class="g"><img src="assets/gen_gt_group.jpg" alt="International group celebrating a giant trevally" loading="lazy"></div>
       <div class="g"><img src="assets/gen_sesoko_buffalo.jpg" alt="Sesoko Island water-buffalo cart" loading="lazy"></div>
+      <div class="g"><img src="assets/gen_taman_me.jpg" alt="Guest with a big taman emperor fish" loading="lazy"></div>
+      <div class="g"><img src="assets/gen_akamachi_woman.jpg" alt="Guest with a ruby snapper (akamachi)" loading="lazy"></div>
+      <div class="g"><img src="assets/gen_family_kid.jpg" alt="Family with a colourful tropical fish" loading="lazy"></div>
     </div>
     <div class="social-cards">
       <a class="social-card" href="https://www.instagram.com/ryuo_umaru/" target="_blank" rel="noopener">
