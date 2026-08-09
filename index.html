@@ -196,9 +196,20 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 .sel-date .seats{color:var(--green);font-weight:900}
 .sel-date .seats.over{color:var(--red)}
 .sel-date .seat-warn{display:inline-block;margin-top:6px;color:var(--red);font-size:.74rem;font-weight:700;line-height:1.5}
-/* カレンダー枠内の「残2」バッジ */
-.cal-day .sn{position:absolute;right:4px;top:3px;font-size:.56rem;font-weight:800;color:var(--green);line-height:1;letter-spacing:0}
-.cal-day .sn.few{color:var(--red)}
+/* カレンダー枠内の残席バッジ。英語だと数字だけになり日付と紛れるため、
+   塗りつぶしのピルにして左下（マークの反対側）に置く */
+.cal-day .sn{position:absolute;left:4px;bottom:3px;font-size:.55rem;font-weight:800;line-height:1;
+  background:var(--green);color:#fff;border-radius:999px;padding:2px 5px;letter-spacing:0;white-space:nowrap}
+.cal-day .sn.few{background:var(--red)}
+/* 凡例に出す残席チップ */
+.cal-legend .lg-seat{display:inline-block;background:var(--green);color:#fff;border-radius:999px;
+  padding:1px 6px;font-size:.6rem;font-weight:800}
+/* スマホはセルが33px程度しかなく、バッジと◯が重なる。
+   残席バッジ自体が「空きあり」を意味するので、その場合は◯を隠して位置を譲る */
+@media(max-width:640px){
+  .cal-day .sn{left:auto;right:3px;bottom:2px;padding:1px 4px}
+  .cal-day .sn ~ .mk{display:none}
+}
 .guest-stepper{display:flex;align-items:center;border:2px solid var(--border);border-radius:11px;overflow:hidden;width:100%;max-width:180px}
 .guest-stepper button{width:46px;height:46px;border:0;background:var(--paper);font-size:1.3rem;font-weight:700;color:var(--indigo);transition:.2s;flex:0 0 46px}
 .guest-stepper button:hover{background:var(--paper-2)}
@@ -589,6 +600,7 @@ footer p{font-size:.8rem}
             <span><b style="color:var(--red)">×</b> <span class="en">Full</span><span class="ja">満船</span></span>
             <span><b style="color:var(--gold)">▲</b> <span class="en">Other trip — ask us</span><span class="ja">他便あり・要相談</span></span>
             <span><b style="color:#a8bfd0">・</b> <span class="en">Open to requests</span><span class="ja">リクエスト可</span></span>
+            <span><b class="lg-seat">3</b> <span class="en">= seats left</span><span class="ja">= 残席数</span></span>
           </div>
           <p class="sel-date" id="selDateTxt"></p>
         </div>
@@ -1008,8 +1020,9 @@ function renderFormCal(){
     const dis=past||!ok;
     const cls=['cal-day',dis?'dis':'',+dt===+today?'today':'',state.date===key?'seld':''].join(' ');
     /* 残席が分かっている日は「残2」を小さく出す。少ない日は赤で強調 */
+    /* 日本語は「残3」、英語は数字のみ（幅が足りないため）。塗りピル＋凡例で意味を補う */
     const sn=(!past&&mk==='◯'&&typeof seats==='number'&&seats>0)
-      ?`<span class="sn${seats<=2?' few':''}">${isJa()?'残'+seats:seats}</span>`:'';
+      ?`<span class="sn${seats<=2?' few':''}" title="${isJa()?'残り'+seats+'席':seats+' seats left'}">${isJa()?'残'+seats:seats}</span>`:'';
     html+=`<button type="button" class="${cls}" ${dis?'disabled':`onclick="fPick('${key}')"`}>${d}${sn}<span class="mk ${mc}">${past?'':mk}</span></button>`;
   }
   grid.innerHTML=html;
