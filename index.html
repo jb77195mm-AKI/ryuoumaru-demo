@@ -193,6 +193,12 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 .sel-date{margin-top:10px;border-top:1px dashed var(--border);padding-top:9px;font-size:.8rem;font-weight:700}
 .sel-date .hint{color:#7b93a1;font-weight:600}
 .sel-date .picked{color:var(--indigo)}
+.sel-date .seats{color:var(--green);font-weight:900}
+.sel-date .seats.over{color:var(--red)}
+.sel-date .seat-warn{display:inline-block;margin-top:6px;color:var(--red);font-size:.74rem;font-weight:700;line-height:1.5}
+/* カレンダー枠内の「残2」バッジ */
+.cal-day .sn{position:absolute;right:4px;top:3px;font-size:.56rem;font-weight:800;color:var(--green);line-height:1;letter-spacing:0}
+.cal-day .sn.few{color:var(--red)}
 .guest-stepper{display:flex;align-items:center;border:2px solid var(--border);border-radius:11px;overflow:hidden;width:100%;max-width:180px}
 .guest-stepper button{width:46px;height:46px;border:0;background:var(--paper);font-size:1.3rem;font-weight:700;color:var(--indigo);transition:.2s;flex:0 0 46px}
 .guest-stepper button:hover{background:var(--paper-2)}
@@ -932,6 +938,7 @@ function changeGuests(d){
   state.guests=Math.min(8,Math.max(1,state.guests+d));
   document.getElementById('guestCount').textContent=state.guests;
   updateTotals();
+  renderSelDate();   /* 残席オーバーの注意書きを人数に追従させる */
 }
 
 /* ================= payment choice ================= */
@@ -972,11 +979,13 @@ function classifyDay(planKeyStr,info){
   const bands=p.times?[(p.times.some(t=>t.band===state.band)?state.band:p.times[0].band)]:p.bands;
   const slots=bands.map(b=>info[b]).filter(Boolean);
   if(planKeyStr!=='charter'){
-    for(const s of slots)if(s.s==='open'&&planKey(s.t)===planKeyStr)return['◯','o',true]; /* 同プラン乗合 */
+    /* 同プラン乗合。カレンダーに残席数が書かれていれば4番目で返す */
+    for(const s of slots)if(s.s==='open'&&planKey(s.t)===planKeyStr)
+      return['◯','o',true,(typeof s.n==='number'?s.n:null)];
   }
-  if(slots.length&&slots.every(s=>s.s==='full'))return['×','x',false];       /* 帯が全て満船 */
-  if(slots.length)return['▲','n',true];                                      /* 他便あり → 要相談 */
-  return['・','r',true];                                                     /* 該当帯は空き → リクエスト可 */
+  if(slots.length&&slots.every(s=>s.s==='full'))return['×','x',false,0];      /* 帯が全て満船 */
+  if(slots.length)return['▲','n',true,null];                                  /* 他便あり → 要相談 */
+  return['・','r',true,null];                                                 /* 該当帯は空き → リクエスト可 */
 }
 function renderFormCal(){
   const grid=document.getElementById('fGrid');
@@ -995,10 +1004,13 @@ function renderFormCal(){
   for(let i=0;i<first;i++)html+='<div class="cal-day blank"></div>';
   for(let d=1;d<=days;d++){
     const dt=new Date(m.getFullYear(),m.getMonth(),d),key=fmt(dt),past=dt<today;
-    const[mk,mc,ok]=classifyDay(state.plan,AV[key]);
+    const[mk,mc,ok,seats]=classifyDay(state.plan,AV[key]);
     const dis=past||!ok;
     const cls=['cal-day',dis?'dis':'',+dt===+today?'today':'',state.date===key?'seld':''].join(' ');
-    html+=`<button type="button" class="${cls}" ${dis?'disabled':`onclick="fPick('${key}')"`}>${d}<span class="mk ${mc}">${past?'':mk}</span></button>`;
+    /* 残席が分かっている日は「残2」を小さく出す。少ない日は赤で強調 */
+    const sn=(!past&&mk==='◯'&&typeof seats==='number'&&seats>0)
+      ?`<span class="sn${seats<=2?' few':''}">${isJa()?'残'+seats:seats}</span>`:'';
+    html+=`<button type="button" class="${cls}" ${dis?'disabled':`onclick="fPick('${key}')"`}>${d}${sn}<span class="mk ${mc}">${past?'':mk}</span></button>`;
   }
   grid.innerHTML=html;
   renderSelDate();
@@ -1010,9 +1022,18 @@ function renderSelDate(){
   if(!state.date){el.innerHTML=`<span class="hint">${ja?'👆 カレンダーから日付を選んでください':'👆 Tap a date on the calendar'}</span>`;return}
   const d=new Date(state.date+'T00:00:00');
   const dstr=ja?`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${DOW_JA[d.getDay()]}）`:`${DOW_EN[d.getDay()]}, ${MONTHS_EN[d.getMonth()]} ${d.getDate()}`;
-  const[mk]=classifyDay(state.plan,AV[state.date]);
+  const[mk,,,seats]=classifyDay(state.plan,AV[state.date]);
   const note=mk==='◯'?(ja?'出船予定あり・乗合で参加':'joining a scheduled trip'):mk==='▲'?(ja?'他便あり・船長が調整します':'other trip that day — we will confirm'):(ja?'リクエスト予約（船長が確定します）':'request — the captain will confirm');
-  el.innerHTML=`<span class="en">Selected: </span><span class="ja">選択中: </span><span class="picked">${dstr}</span> <span class="hint">· ${note}</span>`;
+  /* 残席が分かっていれば表示し、人数が超えていたら赤で注意を出す */
+  let seatTxt='',warn='';
+  if(typeof seats==='number'&&seats>0){
+    const over=state.guests>seats;
+    seatTxt=` <b class="seats${over?' over':''}">${ja?`残り${seats}席`:`${seats} seats left`}</b>`;
+    if(over)warn=`<br><span class="seat-warn">${ja
+      ?`⚠ ご希望の${state.guests}名はこの便の残席を超えています。船長が調整しますのでそのままお進みください。`
+      :`⚠ Your party of ${state.guests} exceeds the seats left on this trip — the captain will sort it out, please continue.`}</span>`;
+  }
+  el.innerHTML=`<span class="en">Selected: </span><span class="ja">選択中: </span><span class="picked">${dstr}</span>${seatTxt} <span class="hint">· ${note}</span>${warn}`;
 }
 function fPick(key){state.date=key;renderFormCal()}
 function fShift(d){fOffset=Math.min(2,Math.max(0,fOffset+d));renderFormCal()}
@@ -1096,7 +1117,10 @@ function renderSlots(){
   for(const s of['am','pm','night']){
     const sl=info[s],label=ja?SLOT_LABEL[s][1]:SLOT_LABEL[s][0];
     if(sl){
-      const stat=sl.s==='open'?(ja?'空きあり':'Seats open'):sl.s==='full'?(ja?'満船':'Full'):(ja?'詳細確認':'See note');
+      const hasN=typeof sl.n==='number'&&sl.n>0;
+      const stat=sl.s==='open'
+        ?(hasN?(ja?`残${sl.n}席`:`${sl.n} left`):(ja?'空きあり':'Seats open'))
+        :sl.s==='full'?(ja?'満船':'Full'):(ja?'詳細確認':'See note');
       const cls=sl.s==='open'?'open':sl.s==='full'?'full':'note';
       const btn=sl.s==='full'?'':`<button class="sbook" onclick="calBook('${calSel}','${(sl.t||'').replace(/'/g,'')}','${s}')">${ja?'この便を予約':'Book this'}</button>`;
       html+=`<div class="slot"><span class="stime">${label}</span><span class="splan">${ja?sl.t:planEn(sl.t)}</span><span class="sstat ${cls}">${stat}</span>${btn}</div>`;
