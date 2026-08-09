@@ -112,7 +112,7 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 
 /* ===== trust strip ===== */
 .trust{display:flex;gap:10px;flex-wrap:wrap;padding:14px 0 26px}
-.trust span{display:inline-flex;align-items:center;gap:7px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:9px 14px;font-size:.78rem;font-weight:700}
+.trust > span{display:inline-flex;align-items:center;gap:7px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:9px 14px;font-size:.78rem;font-weight:700}
 .trust .tick{color:var(--green);font-weight:900}
 
 /* ===== section cards ===== */
@@ -123,9 +123,9 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 
 /* amenities */
 .amen{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.amen span{display:flex;align-items:center;gap:9px;font-size:.82rem;font-weight:600;background:var(--paper);border-radius:10px;padding:10px 12px;min-width:0;overflow-wrap:anywhere}
+.amen > span{display:flex;align-items:center;gap:9px;font-size:.82rem;font-weight:600;background:var(--paper);border-radius:10px;padding:10px 12px;min-width:0;overflow-wrap:anywhere}
 .amen .tick{color:var(--green);font-weight:900}
-@media(max-width:640px){.amen{grid-template-columns:repeat(2,minmax(0,1fr))}.amen span{font-size:.76rem;padding:9px 10px}}
+@media(max-width:640px){.amen{grid-template-columns:repeat(2,minmax(0,1fr))}.amen > span{font-size:.76rem;padding:9px 10px}}
 .caps{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
 .cap-card{display:flex;gap:14px;background:var(--paper);border-radius:14px;padding:16px;min-width:0}
 .cap-card img{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:center 60%;flex:0 0 64px;background:#fff}
@@ -232,7 +232,7 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 #payBtn:hover{background:var(--red-dark);transform:translateY(-1px)}
 .pay-secure{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:.74rem;color:#587082;flex-wrap:wrap;text-align:center}
 .pay-methods{display:flex;justify-content:center;gap:6px;margin-top:9px;flex-wrap:wrap}
-.pay-methods span{font-size:.62rem;font-weight:700;border:1px solid var(--border);border-radius:5px;padding:3px 8px;color:#587082;letter-spacing:.03em}
+.pay-methods > span{font-size:.62rem;font-weight:700;border:1px solid var(--border);border-radius:5px;padding:3px 8px;color:#587082;letter-spacing:.03em}
 .ask-line{margin-top:14px;text-align:center;font-size:.76rem;color:#587082}
 .ask-line a{color:var(--indigo);font-weight:800;text-decoration:underline;text-underline-offset:3px}
 .book-side h3{font-size:1.1rem;font-weight:900;margin-bottom:16px;color:#ffd98a}
@@ -292,7 +292,7 @@ header.scrolled{box-shadow:0 6px 24px rgba(12,42,64,.10)}
 .rev-score .stars{display:block;margin:6px 0 3px}
 .rev-score small{font-size:.7rem;color:#7b93a1;font-weight:600}
 .rev-points{flex:1;min-width:240px;display:flex;flex-direction:column;gap:9px}
-.rev-points span{font-size:.84rem;font-weight:600;display:flex;gap:9px;align-items:flex-start}
+.rev-points > span{font-size:.84rem;font-weight:600;display:flex;gap:9px;align-items:flex-start}
 .rev-points .tick{color:var(--green);font-weight:900}
 
 /* faq */
@@ -392,6 +392,15 @@ footer p{font-size:.8rem}
 
 .rv{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
 .rv.in{opacity:1;transform:none}
+
+/* ===== i18n の保険（必ずスタイルの最後に置く） =====
+   `.trust span{display:flex}` のようなレイアウト指定は詳細度(0,1,1)が
+   `.ja{display:none}`(0,1,0) より高く、英語表示なのに日本語が出てしまう事故が起きた。
+   下の2行は(0,2,1)で確実に勝つため、同種のミスがあっても翻訳が壊れない。 */
+body:not(.lang-ja) .ja{display:none}
+body.lang-ja .en{display:none}
+body:not(.lang-ja) .en.block{display:block}
+body.lang-ja .ja.block{display:block}
 
 #gate{position:fixed;inset:0;z-index:900;display:grid;place-items:center;background:linear-gradient(180deg,#081d2e 0%,#0c2a40 55%,#0e86ad 100%);padding:1rem}
 #gate.off{display:none}
@@ -830,7 +839,7 @@ footer p{font-size:.8rem}
 <div class="modal-back" id="payModal" onclick="if(event.target===this)closePay()">
   <div class="modal">
     <button class="close-x" onclick="closePay()" aria-label="close">✕</button>
-    <span class="demo-tag">DEMO — デモ画面</span>
+    <span class="demo-tag"><span class="en">DEMO SCREEN</span><span class="ja">DEMO — デモ画面</span></span>
     <h3>Stripe Checkout</h3>
     <p style="font-size:.8rem;color:#587082"><span class="en">In the live site, this button opens Stripe's hosted checkout page.</span><span class="ja">本番ではStripeの決済ページが開きます。</span></p>
     <div class="stripe-head">🔒 checkout.stripe.com — Ryuoumaru 龍凰丸</div>
